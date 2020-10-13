@@ -1,7 +1,8 @@
-# DatabaseProject
+# Data Crowdsourcing System
 
-### Data crowdsourcing system
+### Database Team Project
 
-Yonsei University (South Korea) Fall 2020  
+Yonsei University (South Korea)  
+Fall 2020  
 CSI3105-01 Database  
 
