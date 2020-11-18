@@ -13,8 +13,9 @@ class UploadForm(forms.ModelForm):
 
     def save(self, commit=True):
         self.instance = File(**self.cleaned_data)
-        self.instance.name = self.instance.data.name
         if commit:
+            self.instance.save()
+            self.instance.name = self.instance.data.name
             self.instance.save()
         return self.instance
 
