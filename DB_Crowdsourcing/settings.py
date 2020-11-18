@@ -11,7 +11,8 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
-from seckeys import SECRET_KEY, DB_PASSWORD
+from seckeys import SECRET_KEY, \
+                    DB_DBNAME, DB_USRID, DB_PASSWORD, DB_HOST, DB_PORT
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -38,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'basicdb.apps.BasicdbConfig',
+
 ]
 
 MIDDLEWARE = [
@@ -81,11 +84,11 @@ DATABASES = {
         # 'NAME': BASE_DIR / 'db.sqlite3',
 
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'crowdsourcing', # database name
-        'USER': 'root', #root
+        'NAME': DB_DBNAME, # database name
+        'USER': DB_USRID, #root
         'PASSWORD': DB_PASSWORD, # your own MariaDB password
-        'HOST': 'localhost', # default localhost
-        'PORT': '' # default 3306
+        'HOST': DB_HOST, # default localhost
+        'PORT': DB_PORT # default 3306
     }
 }
 # TODO: do following codes
