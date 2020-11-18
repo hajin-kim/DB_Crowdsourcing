@@ -3,7 +3,7 @@
 
 # Keys ignoring
 # TODO: if development is done, hide this key for publishing
-# seckeys.py
+seckeys.py
 # keygen.py
 
 # Byte-compiled / optimized / DLL files
