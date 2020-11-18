@@ -15,9 +15,28 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf import settings
+
 from basicdb import views as basicdbViews
+from parsefile import views as fileuploadViews
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('accounts/', basicdbViews.printAccount)
+    path('accounts/', basicdbViews.printAccount),
+
+    path('', fileuploadViews.index, name='index'),
+    path('upload/', fileuploadViews.uploadFile, name='uploadFile'),
+    path('list/', fileuploadViews.fileList, name='fileList'),
+
 ]
+
+# if settings.DEBUG:
+#     urlpatterns.append(
+#         static(
+#             settings.MEDIA_URL,
+#             settings.MEDIA_ROOT
+#         )
+#     )
+
+

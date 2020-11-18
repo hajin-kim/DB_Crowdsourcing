@@ -1,10 +1,14 @@
 # MacOS .DS_Store file
 *.DS_Store
 
-# Keys ignoring
+# keys ignoring
 # TODO: if development is done, hide this key for publishing
 seckeys.py
 # keygen.py
+
+# test database ignoring
+media/data_original/*
+media/data_parsed/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
