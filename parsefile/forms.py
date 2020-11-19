@@ -1,22 +1,23 @@
 from django import forms
 
-from .models import File
+from .models import OriginFile
 
 class UploadForm(forms.ModelForm):
     """
     docstring
     """
     class Meta:
-        model = File
+        model = OriginFile
         # fields = {'name', 'data'}
-        fields = {'data'}
+        fields = {'file_original'}
 
     def save(self, commit=True):
-        self.instance = File(**self.cleaned_data)
+        self.instance = OriginFile(**self.cleaned_data)
+        
         if commit:
             self.instance.save()
-            self.instance.name = self.instance.data.name
-            self.instance.save()
+            # self.instance.name = self.instance.file_original.name
+            # self.instance.save()
         return self.instance
 
 

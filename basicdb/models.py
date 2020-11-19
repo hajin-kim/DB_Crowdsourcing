@@ -43,10 +43,10 @@ class ParsedFile(models.Model):
     submitter = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='parsed_submits', verbose_name='제출자')
     grader = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='parsed_grades', verbose_name='평가자')
     task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='parsedfiles', verbose_name='태스크')
-    directory = models.CharField('파일 경로', max_length=200)
+    # directory = models.CharField('파일 경로', max_length=200)
     submit_count = models.IntegerField('제출 회차')
-    start_date = models.DateField('시작 날짜')
-    end_date = models.DateField('종료 날짜')
+    start_date = models.DateField('수집 시작 날짜')
+    end_date = models.DateField('수집 종료 날짜')
     total_tuple = models.IntegerField('전체 튜플 수')
     duplicated_tuple = models.IntegerField('중복 튜플 수')
     null_ratio = models.FloatField('null 비율')
@@ -54,9 +54,28 @@ class ParsedFile(models.Model):
     pass_state = models.BooleanField('패스 여부', null=True, blank=True)
     grading_end_date = models.DateField('평가 종료 날짜')
 
+    file_original = models.FileField(
+        '파일', 
+        null=True, 
+        blank=True, 
+        upload_to="data_original/"
+    )
+
+    file_parsed = models.FileField(
+        '처리된 파일', 
+        null=True, 
+        blank=True, 
+        upload_to="data_parsed/"
+    )
+
+    def __str__(self):
+        """
+        return file name
+        """
+        return self.file_parsed.name
 
 class MappingInfo(models.Model):
     task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='mapping_infos', verbose_name='태스크')
-    orginal_schema_name = models.CharField('원본 스키마 이름', max_length=45)
-    orginal_column_name = models.CharField('원본 스키마 속성 레이블', max_length=45)
+    original_schema_name = models.CharField('원본 스키마 이름', max_length=45)
+    original_column_name = models.CharField('원본 스키마 속성 레이블', max_length=45)
     parsing_column_name = models.CharField('파싱 스키마 속성 레이블', max_length=45)
