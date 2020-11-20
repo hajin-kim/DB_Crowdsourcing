@@ -1,4 +1,7 @@
 from django.db import models
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 class Account(models.Model):
     GENDER_CHOICES = [
@@ -12,8 +15,7 @@ class Account(models.Model):
         ('관리자', '관리자'),
     ]
 
-    acc_id = models.CharField('아이디', max_length=45, unique=True)
-    password = models.CharField('비밀번호', max_length=45)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField('이름', max_length=20)
     contact = models.CharField('연락처', max_length=20)
     birth = models.DateField('생년월일')
@@ -21,13 +23,29 @@ class Account(models.Model):
     address = models.CharField('주소', max_length=100)
     role = models.CharField('역할', max_length=10, choices=ROLE_CHOICES)
 
+    def __str__(self):
+        return self.role
+    
+
+@receiver(post_save, sender=User)
+def create_user_account(sender, instance, created, **kwargs):
+    if created:
+        Account.objects.create(user=instance)
+
+@receiver(post_save, sender=User)
+def save_user_account(sender, instance, **kwargs):
+    instance.account.save()
     
 class Task(models.Model):
     name = models.CharField('태스크 이름', max_length=45, unique=True)
     minimal_upload_frequency = models.CharField('최소 업로드 주기', max_length=45)
-    activation_state = models.BooleanField('활성화 상태')
+    activation_state = models.BooleanField('활성화 상태', default=True)
     description = models.CharField('태스크 설명', max_length=100)
     original_data_description = models.CharField('원본 데이터 설명', max_length=100)
+
+    def __str__(self):
+        return self.name
+
 
 
 class Participation(models.Model):
@@ -36,7 +54,7 @@ class Participation(models.Model):
 
     account = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='participations', verbose_name='제출자')
     task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='participations', verbose_name='태스크')
-    admission = models.BooleanField('승인 상태', default=False)
+    admission = models.BooleanField('승인 상태', null=True, default=False)
 
 
 class ParsedFile(models.Model):
@@ -79,3 +97,6 @@ class MappingInfo(models.Model):
     original_schema_name = models.CharField('원본 스키마 이름', max_length=45)
     original_column_name = models.CharField('원본 스키마 속성 레이블', max_length=45)
     parsing_column_name = models.CharField('파싱 스키마 속성 레이블', max_length=45)
+
+    def __str__(self):
+        return self.orginal_schema_name
