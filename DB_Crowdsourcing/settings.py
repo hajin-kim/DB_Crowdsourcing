@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'basicdb.apps.BasicdbConfig',
     'parsefile.apps.ParsefileConfig',
+    'createtask.apps.CreatetaskConfig',
 ]
 
 MIDDLEWARE = [

@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+ <title>{% block title %}done{% endblock %}</title>
+ {% comment %} <link rel="stylesheet" type="text/css" href="{% static 'css/index.css'%}" /> {% endcomment %}
+</head>
+<body>
+ <h1>create task</h1>
+ {% block create_content %}
+    <h2>Give your task information</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ create_form }}
+        <button type="submit">upload</button>
+    </form>
+    <div>
+        <a href="../">
+            go back to index
+        </a>
+    </div>
+ {% endblock %}
+</body>
+</html>
+
+

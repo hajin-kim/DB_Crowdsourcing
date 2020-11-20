@@ -19,6 +19,7 @@ from django.conf import settings
 
 from basicdb import views as basicdbViews
 from parsefile import views as fileuploadViews
+from createtask import views as createtaskViews
 
 
 urlpatterns = [
@@ -28,6 +29,7 @@ urlpatterns = [
     path('', fileuploadViews.index, name='index'),
     path('upload/', fileuploadViews.uploadFile, name='uploadFile'),
     path('list/', fileuploadViews.fileList, name='fileList'),
+    path('create_task/', createtaskViews.createTask, name='createTask'),
 
 ]
 
