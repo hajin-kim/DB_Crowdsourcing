@@ -18,7 +18,7 @@ class Account(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField('이름', max_length=20)
     contact = models.CharField('연락처', max_length=20)
-    birth = models.DateField('생년월일')
+    birth = models.DateField('생년월일', null=True, blank=True)
     gender = models.CharField('성별', max_length=5, choices=GENDER_CHOICES)
     address = models.CharField('주소', max_length=100)
     role = models.CharField('역할', max_length=10, choices=ROLE_CHOICES)
@@ -34,8 +34,12 @@ def create_user_account(sender, instance, created, **kwargs):
 
 @receiver(post_save, sender=User)
 def save_user_account(sender, instance, **kwargs):
-    instance.account.save()
-    
+    try:
+        instance.account.save()
+    except ObjectDoesNotExist:
+        Account.objects.create(user=instance)
+
+
 class Task(models.Model):
     name = models.CharField('태스크 이름', max_length=45, unique=True)
     minimal_upload_frequency = models.CharField('최소 업로드 주기', max_length=45)

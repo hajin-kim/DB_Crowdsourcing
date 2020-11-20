@@ -41,6 +41,7 @@ def uploadFile(request):
         form = UploadForm()
 
     if saved_original_file:
+        # TODO: 이 부분 구현해야 합니다:
         task_name = "test_task"
         schema_name = "test_schema"
         submitter_id = "test_id"
