@@ -3,7 +3,7 @@
 
 # keys ignoring
 # TODO: if development is done, hide this key for publishing
-seckeys.py
+cssite/secrets.json
 # keygen.py
 
 # test database ignoring

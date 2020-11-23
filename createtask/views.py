@@ -190,7 +190,7 @@ def listMappingPairs(request, task_id, schema_id):
     task = Task.objects.filter(id=task_id)[0]
     derived_schema = MappingInfo.objects.filter(id=schema_id, task=task)[0]
 
-    mapping_pairs = generateListString(MappingInfoFromTo.objects.filter(mapping_info=schema))
+    mapping_pairs = generateListString(MappingInfoFromTo.objects.filter(mapping_info=derived_schema))
     return render(request, 'pages/mapping_pair_list.html', {
         'task_name': task.name,
         'schema_name': derived_schema.derived_schema_name,
