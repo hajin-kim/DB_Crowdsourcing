@@ -1,7 +1,6 @@
 from django import forms
 
-from .models import OriginFile
-from basicdb.models import Task, MappingInfo
+from basicdb.models import Task, MappingInfo, OriginFile
 
 class SchemaChoiceForm(forms.ModelForm):
     """

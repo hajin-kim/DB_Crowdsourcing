@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 
-from .forms import CreateTask, CreateSchemaAttribute, CreateMappingInfo, CreateMappingInfoFromTo
+from .forms import CreateTask, CreateSchemaAttribute, CreateMappingInfo, CreateMappingPair
 
-from basicdb.models import Task, SchemaAttribute, MappingInfo, MappingInfoFromTo
+from basicdb.models import Task, SchemaAttribute, MappingInfo, MappingPair
 
 
 def generateListString(iterable):
@@ -148,7 +148,7 @@ def showDerivedSchema(request, task_id, schema_id):
     schema = MappingInfo.objects.filter(id=schema_id, task=task)[0]
 
     schema_info = MappingInfo.objects.filter(id=schema_id).values()[0]
-    mapping_pairs = generateListString(MappingInfoFromTo.objects.filter(mapping_info=schema))
+    mapping_pairs = generateListString(MappingPair.objects.filter(mapping_info=schema))
     return render(request, 'pages/derived_schema_select.html', {
         'task_name': task.name,
         'schema_name': schema.derived_schema_name,
@@ -190,7 +190,7 @@ def listMappingPairs(request, task_id, schema_id):
     task = Task.objects.filter(id=task_id)[0]
     derived_schema = MappingInfo.objects.filter(id=schema_id, task=task)[0]
 
-    mapping_pairs = generateListString(MappingInfoFromTo.objects.filter(mapping_info=schema))
+    mapping_pairs = generateListString(MappingPair.objects.filter(mapping_info=schema))
     return render(request, 'pages/mapping_pair_list.html', {
         'task_name': task.name,
         'schema_name': derived_schema.derived_schema_name,
@@ -205,11 +205,11 @@ def createMappingPair(request, task_id, schema_id):
     task = Task.objects.filter(id=task_id)[0]
     derived_schema = MappingInfo.objects.filter(id=schema_id, task=task)[0]
 
-    mapping_pairs = generateListString(MappingInfoFromTo.objects.filter(mapping_info=derived_schema))
+    mapping_pairs = generateListString(MappingPair.objects.filter(mapping_info=derived_schema))
 
     mapping_pair = None
     if request.method == 'POST':
-        form = CreateMappingInfoFromTo(request.POST, request.FILES)
+        form = CreateMappingPair(request.POST, request.FILES)
         if form.is_valid():
             # form = form.save(commit=False) # 중복 DB save를 방지
             mapping_pair = form.save(derived_schema)
@@ -219,7 +219,7 @@ def createMappingPair(request, task_id, schema_id):
             return redirect('create mapping pair', task_id=task_id, schema_id=schema_id)
 
     else:
-        form = CreateMappingInfoFromTo()
+        form = CreateMappingPair()
     
     return render(request, 'pages/mapping_pair_create.html', {
         'create_mapping_pair_form': form,

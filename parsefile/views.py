@@ -5,10 +5,9 @@ import pandas as pd
 from django.shortcuts import render, redirect
 from django.conf import settings
 
-from .models import OriginFile
 from .forms import SchemaChoiceForm, UploadForm
 
-from basicdb.models import Account, Task, ParsedFile, SchemaAttribute, MappingInfo, MappingInfoFromTo
+from basicdb.models import Account, Task, ParsedFile, SchemaAttribute, MappingInfo, MappingPair, OriginFile
 
 # Create your views here.
 def index(request):
@@ -88,7 +87,7 @@ def uploadFile(request):
         # { 파싱전: 파싱후 }
         mapping_from_to = {
             i.parsing_column_name: i.schema_attribute.attr \
-            for i in MappingInfoFromTo.objects.filter(
+            for i in MappingPair.objects.filter(
                 mapping_info=mapping_info
             )
         }
