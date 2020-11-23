@@ -110,13 +110,18 @@ def uploadFile(request):
         parsed_file_path = os.path.join(settings.MEDIA_ROOT, str(saved_original_file).replace('data_original/', 'data_parsed/'))
         df.to_csv(parsed_file_path, index=False)
 
+        # increment submit count of Participation tuple by 1
+        participation = Participation.objects.filter(account=submitter, task=task)[0]
+        participation.submit_count += 1
+        participation.save()
+
         # make statistic
         # print(df.isnull().sum()/(len(df)*len(df.columns)), "###")
         parsed_file = ParsedFile(
             task=task,
             submitter=submitter,
             grader=grader,
-            submit_count=1,
+            submit_count=participation.submit_count,
             start_date=datetime.now(),
             end_date=datetime.now(),
             total_tuple=len(df),
@@ -132,11 +137,6 @@ def uploadFile(request):
         parsed_file.file_original = str(saved_original_file)
         parsed_file.file_parsed = str(saved_original_file).replace('data_original/', 'data_parsed/')
         parsed_file.save()
-
-        # increment submit count of Participation tuple by 1
-        participation = Participation.objects.filter(account=submitter, task=task)[0]
-        participation.submit_count += 1
-        participation.save()
 
         # TODO: data too long error
         # select @@global.sql_mode;  # SQL 설정 보기
