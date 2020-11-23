@@ -7,7 +7,7 @@ from django.conf import settings
 
 from .forms import SchemaChoiceForm, UploadForm
 
-from basicdb.models import Account, Task, ParsedFile, SchemaAttribute, MappingInfo, MappingPair, OriginFile
+from basicdb.models import Account, Task, Participation, ParsedFile, SchemaAttribute, MappingInfo, MappingPair, OriginFile
 
 # Create your views here.
 def index(request):
@@ -65,10 +65,18 @@ def uploadFile(request):
 
 
     if saved_original_file:
-        # TODO: 이 부분 구현해야 합니다:
+        # TODO: 이 부분 구현해야 합니다!
+        # 각 릴레이션의 튜풀을 받아야 합니다.
+        # 이런 식으로요:
+        # task = Task.objects.filter(***)[0]
+        # 아마 key 등을 이 함수의 파라미터를 통해 받아오는 방법 등을 택할 것 같네요.
         task_name = "test_task"
-        submitter_id = "test_id"
-        grader_id = "test_id"
+        submitter_pk = "test_id"
+        grader_pk = "test_id"
+
+        task = Task.objects.filter(name=task_name)[0]
+        submitter = Account.objects.filter(id=submitter_pk)[0]
+        grader = Account.objects.filter(id=grader_pk)[0]
 
         derived_schema = saved_original_file.derived_schema
 
@@ -77,7 +85,6 @@ def uploadFile(request):
         df = pd.read_csv(saved_original_file.get_absolute_path())
 
         # get DB tuples
-        task = Task.objects.filter(name=task_name)[0]
         mapping_info = MappingInfo.objects.filter(
             task=task, 
             derived_schema_name=derived_schema
@@ -107,8 +114,8 @@ def uploadFile(request):
         # print(df.isnull().sum()/(len(df)*len(df.columns)), "###")
         parsed_file = ParsedFile(
             task=task,
-            submitter=Account.objects.filter(name=submitter_id)[0],
-            grader=Account.objects.filter(name=grader_id)[0],
+            submitter=submitter,
+            grader=grader,
             submit_count=1,
             start_date=datetime.now(),
             end_date=datetime.now(),
@@ -125,6 +132,11 @@ def uploadFile(request):
         parsed_file.file_original = str(saved_original_file)
         parsed_file.file_parsed = str(saved_original_file).replace('data_original/', 'data_parsed/')
         parsed_file.save()
+
+        # increment submit count of Participation tuple by 1
+        participation = Participation.objects.filter(account=submitter, task=task)[0]
+        participation.submit_count += 1
+        participation.save()
 
         # TODO: data too long error
         # select @@global.sql_mode;  # SQL 설정 보기

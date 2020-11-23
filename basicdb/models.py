@@ -59,6 +59,8 @@ class Participation(models.Model):
     account = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='participations', verbose_name='제출자')
     task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='participations', verbose_name='태스크')
     admission = models.BooleanField('승인 상태', null=True, default=False)
+    submit_count = models.IntegerField('제출 횟수', default=0)
+
 
 
 class ParsedFile(models.Model):
