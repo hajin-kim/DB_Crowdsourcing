@@ -1,6 +1,6 @@
 from django import forms
 
-from basicdb.models import Task, SchemaAttribute, MappingInfo, MappingInfoFromTo
+from basicdb.models import Task, SchemaAttribute, MappingInfo, MappingPair
 
 
 class CreateTask(forms.ModelForm):
@@ -71,12 +71,12 @@ class CreateMappingInfo(forms.ModelForm):
         return self.instance
 
     
-class CreateMappingInfoFromTo(forms.ModelForm):
+class CreateMappingPair(forms.ModelForm):
     """
     docstring
     """
     class Meta:
-        model = MappingInfoFromTo
+        model = MappingPair
         fields = {
             # 'mapping_info', 
             'schema_attribute', 
@@ -84,7 +84,7 @@ class CreateMappingInfoFromTo(forms.ModelForm):
         }
 
     def save(self, mapping_info, commit=True):
-        self.instance = MappingInfoFromTo(**self.cleaned_data)
+        self.instance = MappingPair(**self.cleaned_data)
         # self.instance.task = task
         self.instance.mapping_info = mapping_info
 
