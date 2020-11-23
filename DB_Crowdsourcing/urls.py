@@ -27,9 +27,18 @@ urlpatterns = [
     path('accounts/', basicdbViews.printAccount),
 
     path('', fileuploadViews.index, name='index'),
-    path('upload/', fileuploadViews.uploadFile, name='uploadFile'),
-    path('list/', fileuploadViews.fileList, name='fileList'),
-    path('create_task/', createtaskViews.createTask, name='createTask'),
+    path('upload/', fileuploadViews.uploadFile, name='upload file'),
+    path('list/', fileuploadViews.fileList, name='list files'),
+
+    path('task/', createtaskViews.listTasks, name='list tasks'),
+    path('task/<int:task_id>/', createtaskViews.showTask, name='show task'),
+    path('task/create/', createtaskViews.createTask, name='create task'),
+
+    path('task/<int:task_id>/derived_schema/', createtaskViews.listDerivedSchemas, name='list derived schemas'),
+    path('task/<int:task_id>/derived_schema/<int:schema_id>/', createtaskViews.showDerivedSchema, name='show derived schema'),
+    path('task/<int:task_id>/derived_schema/create/', createtaskViews.createDerivedSchema, name='create derived schema'),
+
+    path('create_derived_schema/', createtaskViews.createDerivedSchema, name='createDerivedSchema'),
 
 ]
 

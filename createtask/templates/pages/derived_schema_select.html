@@ -1,0 +1,23 @@
+{% extends 'pages/task.html' %}
+
+{% block title%}
+{{ task_name }} @{{ schema_name }}
+{% endblock %}
+
+{% block content %}
+    <h2>show information of "{{ schema_name }}" @"{{ task_name }}"</h2>
+    {{ schema_info }}
+    <h3>list of mapping info</h3>
+    {{ mapping_info }}
+    <div>
+        <a href="/">
+            go back to index
+        </a>
+    </div>
+    <div>
+        <a href="./derived_schema">
+            manage derived schemas
+        </a>
+    </div>
+{% endblock %}
+

@@ -96,11 +96,43 @@ class ParsedFile(models.Model):
         """
         return self.file_parsed.name
 
-class MappingInfo(models.Model):
-    task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='mapping_infos', verbose_name='태스크')
-    original_schema_name = models.CharField('원본 스키마 이름', max_length=45)
-    original_column_name = models.CharField('원본 스키마 속성 레이블', max_length=45)
-    parsing_column_name = models.CharField('파싱 스키마 속성 레이블', max_length=45)
+class SchemaAttribute(models.Model):
+    """
+    docstring
+    """
+    task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='schema_definition', verbose_name='태스크')
+    attr = models.CharField('컬럼 레이블', max_length=45)
 
     def __str__(self):
-        return self.orginal_schema_name
+        """
+        """
+        return self.attr
+
+class MappingInfo(models.Model):
+    task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='mapping_info', verbose_name='파생 스키마 매핑 정보')
+    derived_schema_name = models.CharField('파생 스키마 이름', max_length=45)
+
+    def __str__(self):
+        """
+        """
+        return self.derived_schema_name
+
+
+class MappingInfoFromTo(models.Model):
+    """
+    docstring
+    """
+    mapping_info = models.ForeignKey(MappingInfo, on_delete=models.CASCADE, related_name='mapping_info_attribute', verbose_name='매핑 정보')
+    # 실제 마스터 스키마의 FK
+    schema_attribute = models.ForeignKey(SchemaAttribute, on_delete=models.CASCADE, related_name='derived_schema_to_unique_schema_mapping', verbose_name='고유 스키마 속성')
+    # schema for user to parse
+    parsing_column_name = models.CharField('파생 스키마 속성 레이블', max_length=45)
+
+    def __str__(self):
+        dictionary = {
+            self.mapping_info.__str__(): {
+                "master": self.schema_attribute.__str__(),
+                "derived": self.parsing_column_name.__str__()
+            }
+        }
+        return dictionary.__str__()
