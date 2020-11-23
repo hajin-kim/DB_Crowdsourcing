@@ -5,18 +5,16 @@
 {% endblock %}
 
 {% block content %}
-    <h2>show information of "{{ schema_name }}" @"{{ task_name }}"</h2>
-    {{ schema_info }}
-    <h3>list of mapping pairs</h3>
-    {{ mapping_pairs|linebreaks }}
+    <h2>list mapping pairs of "{{ schema_name }}" @"{{ task_name }}"</h2>
+    {{ list_of_mapping_pairs|linebreaks }}
     <div>
         <a href="/">
             go back to index
         </a>
     </div>
     <div>
-        <a href="./pair">
-            manage mapping pairs
+        <a href="./create">
+            create mapping pair
         </a>
     </div>
 {% endblock %}

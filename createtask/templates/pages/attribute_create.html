@@ -1,16 +1,17 @@
 {% extends 'pages/task.html' %}
 
 {% block title%}
-create derived schema
+create attribute
 {% endblock %}
 
 {% block content %}
-    <h2>Give your derived schema information</h2>
+    <h2>Give your attribute</h2>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ create_derived_schema_form }}
+        {{ create_attribute_form }}
         <button type="submit">create</button>
     </form>
+    {{ list_of_attributes|linebreaks }}
     <div>
         <a href="/">
             go back to index

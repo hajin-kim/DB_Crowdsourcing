@@ -34,11 +34,15 @@ urlpatterns = [
     path('task/<int:task_id>/', createtaskViews.showTask, name='show task'),
     path('task/create/', createtaskViews.createTask, name='create task'),
 
+    path('task/<int:task_id>/attribute/', createtaskViews.listAttributes, name='list attributes'),
+    path('task/<int:task_id>/attribute/create/', createtaskViews.createAttribute, name='create attribute'),
+
     path('task/<int:task_id>/derived_schema/', createtaskViews.listDerivedSchemas, name='list derived schemas'),
     path('task/<int:task_id>/derived_schema/<int:schema_id>/', createtaskViews.showDerivedSchema, name='show derived schema'),
     path('task/<int:task_id>/derived_schema/create/', createtaskViews.createDerivedSchema, name='create derived schema'),
 
-    path('create_derived_schema/', createtaskViews.createDerivedSchema, name='createDerivedSchema'),
+    path('task/<int:task_id>/derived_schema/<int:schema_id>/pair/', createtaskViews.listMappingPairs, name='list mapping pairs'),
+    path('task/<int:task_id>/derived_schema/<int:schema_id>/pair/create', createtaskViews.createMappingPair, name='create mapping pair'),
 
 ]
 
