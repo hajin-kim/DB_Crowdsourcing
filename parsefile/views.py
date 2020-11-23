@@ -117,19 +117,21 @@ def uploadFile(request):
 
         # make statistic
         # print(df.isnull().sum()/(len(df)*len(df.columns)), "###")
+        duplicated_tuple = len(df)-len(df.drop_duplicates())
+        null_ratio = df.isnull().sum().sum()/(len(df)*len(df.columns)) if (len(df)*len(df.columns) > 0 else 1
         parsed_file = ParsedFile(
             task=task,
             submitter=submitter,
             grader=grader,
             submit_count=participation.submit_count,
-            start_date=datetime.now(),
-            end_date=datetime.now(),
+            start_date=datetime.now(),  # TODO: should be implemented that user can select the date
+            end_date=datetime.now(),    # TODO: should be implemented that user can select the date
             total_tuple=len(df),
-            duplicated_tuple=len(df)-len(df.drop_duplicates()),
-            null_ratio=df.isnull().sum().sum()/(len(df)*len(df.columns)),
-            grading_score=3,
-            pass_state=True,
-            grading_end_date=datetime.now(),
+            duplicated_tuple=duplicated_tuple,
+            null_ratio=null_ratio,
+            # grading_score=,   # TODO: should be immplemented
+            pass_state=False,
+            grading_end_date=datetime.now(),    # TODO: should be implemented
         )
 
         # save the parsed file
