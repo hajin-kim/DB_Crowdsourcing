@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.http import HttpResponse
 
 from .forms import CreateTask, CreateSchemaAttribute, CreateMappingInfo, CreateMappingInfoFromTo
 
@@ -101,6 +102,9 @@ def createAttribute(request, task_id):
     form = None
     task = Task.objects.filter(id=task_id)[0]
     attribute = None
+
+    if task.activation_state:
+        return HttpResponse("<h2>태스크가 활성화되어 있습니다!</h3>")
     
     attributes = generateListString(SchemaAttribute.objects.filter(task=task))
 
